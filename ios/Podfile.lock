@@ -362,6 +362,8 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
+  - RNVectorIcons (8.1.0):
+    - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -427,6 +429,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeNavigation (from `../node_modules/react-native-navigation`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -513,6 +516,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-navigation"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -563,11 +568,12 @@ SPEC CHECKSUMS:
   ReactCommon: eb059748e842a1a86025ebbd4ac9d99e74492f88
   ReactNativeNavigation: 3ab7ff832654964985de47c9ee67999e34cd63d8
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
+  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 5d28f892be6479074ec69328d36f6f75ac309966
+PODFILE CHECKSUM: 50c69abc2df0aaa2cc426dd358b353a73acf1db2
 
 COCOAPODS: 1.11.2
