@@ -2,20 +2,12 @@
  * @format
  */
 import {Navigation} from 'react-native-navigation'
-import App from './App'
-Navigation.registerComponent('com.myApp.WelcomeScreen', () => App)
+import {startApp, Screens} from './src/screens'
+
+Screens.forEach((ScreenComponent, key) =>
+  Navigation.registerComponent(key, () => ScreenComponent),
+)
+
 Navigation.events().registerAppLaunchedListener(() => {
-  Navigation.setRoot({
-    root: {
-      stack: {
-        children: [
-          {
-            component: {
-              name: 'com.myApp.WelcomeScreen',
-            },
-          },
-        ],
-      },
-    },
-  })
+  startApp()
 })

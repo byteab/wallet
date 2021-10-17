@@ -6,7 +6,8 @@ import * as React from 'react'
 import {StatusBar} from 'react-native'
 import {Navigation} from 'react-native-navigation'
 import type {LayoutTabsChildren} from 'react-native-navigation'
-import Icon from 'react-native-vector-icons/Feather'
+import Icon from 'react-native-vector-icons/Entypo'
+import {GRAY_400, PRIMARY_300} from '../styles/colors'
 
 export const TOKENS_SCREEN = 'wallet.TokensScreen'
 export const HOME_SCREEN = 'wallet.HomeScreen'
@@ -20,10 +21,10 @@ Screens.set(LANDING_SCREEN, landing)
 export const startApp = () => {
   StatusBar.setBarStyle('dark-content', true)
 
-  const iconColor = 'rgba(0,0,0,0.5)'
-  const textColor = 'rgba(0,0,0,0.5)'
-  const selectedIconColor = '#BB954F'
-  const selectedTextColor = '#BB954F'
+  const iconColor = GRAY_400
+  const textColor = GRAY_400
+  const selectedIconColor = PRIMARY_300
+  const selectedTextColor = PRIMARY_300
 
   const tabs: LayoutTabsChildren[] = [
     {
@@ -62,7 +63,7 @@ export const startApp = () => {
               options: {
                 topBar: {
                   title: {
-                    text: 'Collections',
+                    text: 'TOKENS',
                   },
                 },
               },
@@ -75,55 +76,12 @@ export const startApp = () => {
             textColor,
             selectedIconColor,
             selectedTextColor,
-            text: 'Categories',
-            testID: 'CATEGORIES_TAB',
+            text: 'TOKENS',
+            testID: 'TOKENS_TAB',
             icon: Icon.getImageSourceSync('grid', 30, '#900'),
           },
-        },
-      },
-    },
-    {
-      stack: {
-        id: 'CART_SCREEN',
-        children: [
-          {
-            component: {
-              name: CART_SCREEN,
-            },
-          },
-        ],
-        options: {
-          bottomTab: {
-            iconColor,
-            textColor,
-            selectedIconColor,
-            selectedTextColor,
-            text: 'Cart',
-            testID: 'CART_TAB',
-            icon: Icon.getImageSourceSync('shopping-cart', 30, '#900'),
-          },
-        },
-      },
-    },
-    {
-      stack: {
-        id: 'LANDING_SCREEN',
-        children: [
-          {
-            component: {
-              name: LANDING_SCREEN,
-            },
-          },
-        ],
-        options: {
-          bottomTab: {
-            iconColor,
-            textColor,
-            selectedIconColor,
-            selectedTextColor,
-            text: 'More',
-            testID: 'MORE_TAB',
-            icon: Icon.getImageSourceSync('align-left', 30, '#900'),
+          topBar: {
+            visible: false,
           },
         },
       },
