@@ -7,7 +7,15 @@ import {StatusBar} from 'react-native'
 import {Navigation} from 'react-native-navigation'
 import type {LayoutTabsChildren} from 'react-native-navigation'
 import Icon from 'react-native-vector-icons/Entypo'
-import {GRAY_400, PRIMARY_300} from '../styles/colors'
+import {
+  GRAY_100,
+  GRAY_400,
+  GRAY_500,
+  PRIMARY_300,
+  PRIMARY_400,
+  PRIMARY_500,
+  PRIMARY_600,
+} from '../styles/colors'
 
 export const TOKENS_SCREEN = 'wallet.TokensScreen'
 export const HOME_SCREEN = 'wallet.HomeScreen'
@@ -23,8 +31,8 @@ export const startApp = () => {
 
   const iconColor = GRAY_400
   const textColor = GRAY_400
-  const selectedIconColor = PRIMARY_300
-  const selectedTextColor = PRIMARY_300
+  const selectedIconColor = PRIMARY_600
+  const selectedTextColor = PRIMARY_600
 
   const tabs: LayoutTabsChildren[] = [
     {
@@ -92,12 +100,15 @@ export const startApp = () => {
     statusBar: {
       backgroundColor: '#fff',
     },
+    layout: {
+      backgroundColor: '#fff',
+    },
     topBar: {
       title: {
         color: '#000',
       },
       backButton: {
-        color: 'white',
+        color: GRAY_500,
       },
       background: {
         color: '#fff',
