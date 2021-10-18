@@ -22,7 +22,11 @@ import {
 import {paddings} from '../styles/sizes'
 import Mover from '../components/Mover'
 import TokenTopInfo from '../components/TokenTopInfo'
+import RNBootSplash from 'react-native-bootsplash'
 const home = () => {
+  React.useEffect(() => {
+    RNBootSplash.hide({fade: true})
+  }, [])
   return (
     <View style={styles.body}>
       <Header />
