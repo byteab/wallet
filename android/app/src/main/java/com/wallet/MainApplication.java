@@ -11,6 +11,9 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+// for re-animated
+import com.facebook.react.bridge.JSIModulePackage; // <- add
+import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 
 public class MainApplication extends NavigationApplication {
 
@@ -33,6 +36,11 @@ public class MainApplication extends NavigationApplication {
         @Override
         protected String getJSMainModuleName() {
           return "index";
+        }
+
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+          return new ReanimatedJSIModulePackage(); // <- add
         }
       };
 

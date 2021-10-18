@@ -10,7 +10,7 @@ import {
 import FastImage from 'react-native-fast-image'
 import type {Source} from 'react-native-fast-image'
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen'
-import {tobTabs, tokensInfo} from '../data/screen.home.data'
+import {tobTabs, tokensInfo} from '../data/fake-data'
 import {
   GRAY_400,
   GRAY_800,
@@ -21,12 +21,12 @@ import {
 } from '../styles/colors'
 import {paddings} from '../styles/sizes'
 import Mover from '../components/Mover'
-import TokenInfo from '../components/TokenInfo'
+import TokenTopInfo from '../components/TokenTopInfo'
 const home = () => {
   return (
     <View style={styles.body}>
       <Header />
-      <ScrollView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.tabs}>
           {tobTabs.map(({imageUrl, text, active}) => (
             <TabItem isActive={!!active} imageUrl={imageUrl} text={text} />
@@ -51,15 +51,17 @@ const home = () => {
               source={require('../assets/images/binance.png')}
             />
           </View>
+          {/* 🔥🔥🔥🔥 🔥🔥🔥 🔥🔥🔥🔥🔥🔥🔥🔥🔥 */}
+          {/* Nested Virtualized list inside scroll view is really a bad idea, I will later fix that */}
           <FlatList
             ListHeaderComponent={() => (
-              <View style={tokenInfoStyle.container}>
-                <Text style={tokenInfoStyle.text}>Gainers & Losers</Text>
+              <View style={tokenTopInfoStyle.container}>
+                <Text style={tokenTopInfoStyle.text}>Gainers & Losers</Text>
               </View>
             )}
             renderItem={({item, index}) => {
               return (
-                <TokenInfo
+                <TokenTopInfo
                   currency={item.tokenName}
                   percentage={item.raisePercentage}
                   backgroundColor={item.backgroundColor}
@@ -79,7 +81,7 @@ const home = () => {
   )
 }
 
-const tokenInfoStyle = StyleSheet.create({
+const tokenTopInfoStyle = StyleSheet.create({
   container: {
     marginBottom: wp(3),
     marginTop: wp(7),
@@ -115,8 +117,9 @@ const headerStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingBottom: 30,
-    paddingHorizontal: wp(7),
+    paddingBottom: 15,
+    paddingHorizontal: paddings.screenPaddingHorizontal,
+    backgroundColor: 'rgba(255,255,255,0.8)',
   },
   left: {
     flexDirection: 'row',
@@ -206,10 +209,12 @@ const TabItem: React.FC<{imageUrl: Source; text: string; isActive: boolean}> =
 const styles = StyleSheet.create({
   body: {
     paddingTop: paddings.screenPaddingTop,
+    paddingBottom: wp(10),
   },
   container: {
     width: wp(100),
     paddingHorizontal: paddings.screenPaddingHorizontal,
+    paddingTop: 15,
   },
   tabs: {
     flexDirection: 'row',

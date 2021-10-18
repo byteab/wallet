@@ -28,6 +28,7 @@ export const tokensInfo = [
     abbr: 'BTC',
     price: '6,320.00',
     raisePercentage: '+1.68%',
+    amount: 10
   },
   {
     image: require('../assets/images/binance.png'),
@@ -36,6 +37,7 @@ export const tokensInfo = [
     abbr: 'BIN',
     price: '2,33.00',
     raisePercentage: '+2.33%',
+    amount: 3
   },
   {
     image: require('../assets/images/bitcoin.png'),
@@ -44,6 +46,7 @@ export const tokensInfo = [
     abbr: 'BTC',
     price: '6,320.00',
     raisePercentage: '+1.68%',
+    amount: 0
   },
   {
     image: require('../assets/images/binance.png'),
@@ -52,6 +55,7 @@ export const tokensInfo = [
     abbr: 'BIN',
     price: '2,33.00',
     raisePercentage: '+2.33%',
+    amount: 2
   },
   {
     image: require('../assets/images/bitcoin.png'),
@@ -60,6 +64,7 @@ export const tokensInfo = [
     abbr: 'BTC',
     price: '6,320.00',
     raisePercentage: '+1.68%',
+    amount: 7
   },
   {
     image: require('../assets/images/binance.png'),
@@ -68,6 +73,7 @@ export const tokensInfo = [
     abbr: 'BIN',
     price: '2,33.00',
     raisePercentage: '+2.33%',
+    amount: 4
   },
   {
     image: require('../assets/images/bitcoin.png'),
@@ -76,6 +82,7 @@ export const tokensInfo = [
     abbr: 'BTC',
     price: '6,320.00',
     raisePercentage: '+1.68%',
+    amount: 8
   },
   {
     image: require('../assets/images/binance.png'),
@@ -84,5 +91,6 @@ export const tokensInfo = [
     abbr: 'BIN',
     price: '2,33.00',
     raisePercentage: '+2.33%',
+    amount: 4
   },
 ]

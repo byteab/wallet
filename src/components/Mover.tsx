@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: wp(8),
     height: 180,
-    flexBasis: 165,
+    flexBasis: 173,
     flexShrink: 1,
     flexGrow: 0,
     backgroundColor: PRIMARY_50,
