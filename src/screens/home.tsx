@@ -51,7 +51,6 @@ const home = () => {
     onScroll: (event, ctx) => {
       const diff = event.contentOffset.y - ctx.prevY
       scrollClamp.value = clamp(scrollClamp.value + diff, 0, HEADER_HEIGHT)
-      console.log(scrollClamp.value)
     },
     onBeginDrag: (event, ctx) => {
       ctx.prevY = event.contentOffset.y
