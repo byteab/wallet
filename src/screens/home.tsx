@@ -25,6 +25,8 @@ import Mover from '../components/Mover'
 import TokenTopInfo from '../components/TokenTopInfo'
 import RNBootSplash from 'react-native-bootsplash'
 import Animated, {
+  Extrapolate,
+  interpolate,
   SharedValue,
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -38,22 +40,71 @@ const home = () => {
     }
   }, [])
 
-  const scrollOffset = useSharedValue(0)
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: e => {
-      scrollOffset.value = e.contentOffset.y
-      console.log(scrollOffset.value)
+  const HEADER_HEIGHT = wp(20)
+  const clamp = (value: number, lowerBound: number, upperBound: number) => {
+    'worklet'
+    return Math.min(Math.max(lowerBound, value), upperBound)
+  }
+
+  const scrollClamp = useSharedValue(0)
+  const scrollHandler = useAnimatedScrollHandler<{prevY: number}>({
+    onScroll: (event, ctx) => {
+      const diff = event.contentOffset.y - ctx.prevY
+      scrollClamp.value = clamp(scrollClamp.value + diff, 0, HEADER_HEIGHT)
+      console.log(scrollClamp.value)
     },
+    onBeginDrag: (event, ctx) => {
+      ctx.prevY = event.contentOffset.y
+    },
+  })
+
+  const topPartRef = React.useRef()
+
+  const aValue = -wp(25)
+  const topPartStyle = useAnimatedStyle(() => {
+    const clampedScrollY = interpolate(
+      scrollClamp.value,
+      [0, HEADER_HEIGHT],
+      [0, HEADER_HEIGHT],
+      Extrapolate.CLAMP,
+    )
+    const minusScrollY = clampedScrollY * -1
+    const translateY = clamp(minusScrollY, aValue, 0)
+    return {
+      position: 'absolute',
+      transform: [
+        {
+          translateY,
+        },
+      ],
+      paddingHorizontal: paddings.screenPaddingHorizontal,
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      zIndex: 1000,
+    }
   })
 
   return (
     <SafeAreaView style={styles.body}>
-      <Header scrollOffset={scrollOffset} />
-      <View style={styles.tabs}>
-        {tobTabs.map(({imageUrl, text, active}) => (
-          <TabItem isActive={!!active} imageUrl={imageUrl} text={text} />
-        ))}
-      </View>
+      <Animated.View
+        onLayout={e => {
+          //@ts-ignore
+          // topPartRef.current?.measure((fx, fy, width, height, px, py) => {
+          //   y.value = py
+          // })
+        }}
+        style={[
+          topPartStyle,
+          {width: wp(100), paddingTop: paddings.screenPaddingTop},
+        ]}
+        //@ts-ignore
+        ref={topPartRef}>
+        <Header scrollClamp={scrollClamp} />
+        <View style={styles.tabs}>
+          {tobTabs.map(({imageUrl, text, active}) => (
+            <TabItem isActive={!!active} imageUrl={imageUrl} text={text} />
+          ))}
+        </View>
+      </Animated.View>
       <AnimatedFlatList
         style={styles.flatList}
         onScroll={scrollHandler}
@@ -114,33 +165,18 @@ const tokenTopInfoStyle = StyleSheet.create({
   },
 })
 
-const Header: React.FC<{scrollOffset: SharedValue<number>}> = ({
-  scrollOffset,
-}) => {
-  const y = useSharedValue(100)
-  const ref = React.useRef<Animated.View | undefined>()
+const Header: React.FC<{scrollOffset: SharedValue<number>}> = () => {
   const container = useAnimatedStyle(() => {
     return {
-      position: scrollOffset.value >= y.value ? 'absolute' : 'relative',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingBottom: 15,
-      backgroundColor: 'rgba(255,255,255,0.8)',
+      // backgroundColor: 'rgba(255,255,255,0.8)',
     }
   })
   return (
-    <Animated.View
-      onLayout={e => {
-        //@ts-ignore
-        ref.current?.measure((fx, fy, width, height, px, py) => {
-          y.value = py
-        })
-      }}
-      //@ts-ignore
-      ref={ref}
-      // style={headerStyle.container}>
-      style={container}>
+    <Animated.View style={container}>
       <View style={headerStyle.left}>
         <FastImage
           source={require('../assets/images/menu.png')}
@@ -164,7 +200,6 @@ const headerStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 15,
-    backgroundColor: 'rgba(255,255,255,0.8)',
   },
   left: {
     flexDirection: 'row',
@@ -258,7 +293,7 @@ const styles = StyleSheet.create({
   },
   flatList: {},
   flatListContent: {
-    // paddingTop: wp(1),
+    paddingTop: wp(40),
     // paddingBottom: wp(20),
     // paddingHorizontal: paddings.screenPaddingHorizontal,
   },
