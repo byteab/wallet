@@ -16,6 +16,7 @@ import {
   PRIMARY_500,
   PRIMARY_600,
 } from '../styles/colors'
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen'
 
 export const TOKENS_SCREEN = 'wallet.TokensScreen'
 export const HOME_SCREEN = 'wallet.HomeScreen'
@@ -53,7 +54,9 @@ export const startApp = () => {
             selectedTextColor,
             text: 'HOME',
             testID: 'HOME_TAB',
-            icon: Icon.getImageSourceSync('home', 30, '#900'),
+            // TODO: use react-native-vector-icons instead
+            icon: require('../assets/icons/home.png'),
+            iconWidth: wp(8),
           },
           topBar: {
             visible: false,
@@ -86,7 +89,8 @@ export const startApp = () => {
             selectedTextColor,
             text: 'TOKENS',
             testID: 'TOKENS_TAB',
-            icon: Icon.getImageSourceSync('grid', 30, '#900'),
+            icon: require('../assets/icons/option.png'),
+            iconWidth: wp(7.5),
           },
           topBar: {
             visible: false,

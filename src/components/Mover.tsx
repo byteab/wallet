@@ -3,10 +3,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native'
 import FastImage, {Source} from 'react-native-fast-image'
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen'
 import {
-  GRAY_100,
   GRAY_400,
-  PRIMARY_100,
-  PRIMARY_200,
   PRIMARY_50,
 } from '../styles/colors'
 
@@ -42,31 +39,30 @@ export default Mover
 const styles = StyleSheet.create({
   container: {
     borderRadius: wp(8),
-    height: 180,
-    flexBasis: 173,
-    flexShrink: 1,
-    flexGrow: 0,
+    height: wp(42),
+    width: wp(42),
     backgroundColor: PRIMARY_50,
     justifyContent: 'space-between',
   },
   image: {
-    width: 40,
-    height: 40,
-    margin: 15,
+    width: wp(10),
+    height: wp(10),
+    margin: wp(5),
   },
   textsContainer: {
-    padding: 20,
+    padding: wp(5),
   },
   titleFirstPart: {
-    fontSize: 18,
+    fontSize: wp(4.5),
     fontWeight: '400',
   },
   titleSecondPart: {
-    fontSize: 14,
+    fontSize: wp(3.2),
     color: GRAY_400,
     fontWeight: '400',
   },
   percentage: {
-    fontSize: 20,
+    fontSize: wp(4),
+    marginTop: wp(0.5),
   },
 })

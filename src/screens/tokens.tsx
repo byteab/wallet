@@ -1,52 +1,51 @@
 import * as React from 'react'
-import {Text, FlatList, View, StyleSheet} from 'react-native'
+import {Text, FlatList, View, StyleSheet, SafeAreaView} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen'
 import TokenInfo from '../components/TokenInfo'
 import {tokensInfo} from '../data/fake-data'
-import {
-  GRAY_400,
-  GRAY_800,
-} from '../styles/colors'
+import {GRAY_400, GRAY_800} from '../styles/colors'
 import {paddings} from '../styles/sizes'
 let data = [...tokensInfo, ...tokensInfo, ...tokensInfo, ...tokensInfo]
 const tokens = () => {
   return (
-    <FlatList
-      ListHeaderComponent={() => (
-        <View style={styles.header}>
-          <View style={styles.headerTextsContainer}>
-            <Text style={styles.headerPrice}>$ 72,163.00</Text>
-            <Text style={styles.headerTitle}>Portfolio balance</Text>
+    <SafeAreaView>
+      <FlatList
+        ListHeaderComponent={() => (
+          <View style={styles.header}>
+            <View style={styles.headerTextsContainer}>
+              <Text style={styles.headerPrice}>$ 72,163.00</Text>
+              <Text style={styles.headerTitle}>Portfolio balance</Text>
+            </View>
+            <View style={styles.headerImageContainer}>
+              <FastImage
+                style={styles.headerImage}
+                source={require('../assets/images/profile.jpeg')}
+              />
+            </View>
           </View>
-          <View style={styles.headerImageContainer}>
-            <FastImage
-              style={styles.headerImage}
-              source={require('../assets/images/profile.jpeg')}
+        )}
+        showsVerticalScrollIndicator={false}
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+        style={styles.flatList}
+        contentContainerStyle={styles.flatListContainer}
+        data={data}
+        renderItem={({item, index}) => {
+          return (
+            <TokenInfo
+              amount={item.amount}
+              currency={item.tokenName}
+              price={item.price}
+              currencySymbol={item.abbr}
+              // using index as key is terrible
+              key={index}
+              image={item.image}
             />
-          </View>
-        </View>
-      )}
-      showsVerticalScrollIndicator={false}
-      stickyHeaderIndices={[0]}
-      stickyHeaderHiddenOnScroll={true}
-      style={styles.flatList}
-      contentContainerStyle={styles.flatListContainer}
-      data={data}
-      renderItem={({item, index}) => {
-        return (
-          <TokenInfo
-            amount={item.amount}
-            currency={item.tokenName}
-            price={item.price}
-            currencySymbol={item.abbr}
-            // using index as key is terrible
-            key={index}
-            image={item.image}
-          />
-        )
-      }}
-    />
+          )
+        }}
+      />
+    </SafeAreaView>
   )
 }
 

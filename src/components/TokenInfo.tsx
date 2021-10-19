@@ -35,7 +35,7 @@ const TokenInfo: React.FC<{
 
 const style = StyleSheet.create({
   container: {
-    borderRadius: wp(5),
+    borderRadius: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderWidth: wp(0.3),

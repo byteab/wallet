@@ -1,12 +1,13 @@
 import * as React from 'react'
 import {
-  FlatList,
+  Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   View,
+  SafeAreaView,
 } from 'react-native'
+import {FlatList} from 'react-native-gesture-handler'
 import FastImage from 'react-native-fast-image'
 import type {Source} from 'react-native-fast-image'
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen'
@@ -23,65 +24,83 @@ import {paddings} from '../styles/sizes'
 import Mover from '../components/Mover'
 import TokenTopInfo from '../components/TokenTopInfo'
 import RNBootSplash from 'react-native-bootsplash'
+import Animated, {
+  SharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated'
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const home = () => {
   React.useEffect(() => {
-    RNBootSplash.hide({fade: true})
+    if (Platform.OS === 'android') {
+      RNBootSplash.hide({fade: true})
+    }
   }, [])
+
+  const scrollOffset = useSharedValue(0)
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: e => {
+      scrollOffset.value = e.contentOffset.y
+      console.log(scrollOffset.value)
+    },
+  })
+
   return (
-    <View style={styles.body}>
-      <Header />
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        <View style={styles.tabs}>
-          {tobTabs.map(({imageUrl, text, active}) => (
-            <TabItem isActive={!!active} imageUrl={imageUrl} text={text} />
-          ))}
-        </View>
-        <View style={styles.moverContainer}>
-          <View style={styles.moverHeader}>
-            <Text style={styles.moverTitle}>Top Movers</Text>
-            <Text style={styles.moverShowMore}>See all</Text>
-          </View>
-          <View style={styles.movers}>
-            <Mover
-              backgroundColor={PRIMARY_50}
-              percentage="+99.87%"
-              title="BCH $0.68"
-              source={require('../assets/images/bitcoin-cash.png')}
-            />
-            <Mover
-              backgroundColor={SECONDARY_50}
-              percentage="+97.87%"
-              title="BIN $0.70"
-              source={require('../assets/images/binance.png')}
-            />
-          </View>
-          {/* 🔥🔥🔥🔥 🔥🔥🔥 🔥🔥🔥🔥🔥🔥🔥🔥🔥 */}
-          {/* Nested Virtualized list inside scroll view is really a bad idea, I will later fix that */}
-          <FlatList
-            ListHeaderComponent={() => (
-              <View style={tokenTopInfoStyle.container}>
-                <Text style={tokenTopInfoStyle.text}>Gainers & Losers</Text>
+    <SafeAreaView style={styles.body}>
+      <Header scrollOffset={scrollOffset} />
+      <View style={styles.tabs}>
+        {tobTabs.map(({imageUrl, text, active}) => (
+          <TabItem isActive={!!active} imageUrl={imageUrl} text={text} />
+        ))}
+      </View>
+      <AnimatedFlatList
+        style={styles.flatList}
+        onScroll={scrollHandler}
+        contentContainerStyle={styles.flatListContent}
+        ListHeaderComponent={() => (
+          <View style={tokenTopInfoStyle.container}>
+            <View style={styles.moverContainer}>
+              <View style={styles.moverHeader}>
+                <Text style={styles.moverTitle}>Top Movers</Text>
+                <Text style={styles.moverShowMore}>See all</Text>
               </View>
-            )}
-            renderItem={({item, index}) => {
-              return (
-                <TokenTopInfo
-                  currency={item.tokenName}
-                  percentage={item.raisePercentage}
-                  backgroundColor={item.backgroundColor}
-                  price={item.price}
-                  currencySymbol={item.abbr}
-                  // using index as key is terrible
-                  key={index}
-                  image={item.image}
+              <View style={styles.movers}>
+                <Mover
+                  backgroundColor={PRIMARY_50}
+                  percentage="+99.87%"
+                  title="BCH $0.68"
+                  source={require('../assets/images/bitcoin-cash.png')}
                 />
-              )
-            }}
-            data={tokensInfo}
-          />
-        </View>
-      </ScrollView>
-    </View>
+                <Mover
+                  backgroundColor={SECONDARY_50}
+                  percentage="+97.87%"
+                  title="BIN $0.70"
+                  source={require('../assets/images/binance.png')}
+                />
+              </View>
+            </View>
+            <Text style={tokenTopInfoStyle.text}>Gainers & Losers</Text>
+          </View>
+        )}
+        showsVerticalScrollIndicator={false}
+        renderItem={({item, index}) => {
+          return (
+            <TokenTopInfo
+              currency={item.tokenName}
+              percentage={item.raisePercentage}
+              backgroundColor={item.backgroundColor}
+              price={item.price}
+              currencySymbol={item.abbr}
+              // using index as key is terrible
+              key={index}
+              image={item.image}
+            />
+          )
+        }}
+        data={tokensInfo}
+      />
+    </SafeAreaView>
   )
 }
 
@@ -89,16 +108,39 @@ const tokenTopInfoStyle = StyleSheet.create({
   container: {
     marginBottom: wp(3),
     marginTop: wp(7),
-    paddingHorizontal: wp(1),
   },
   text: {
     fontSize: wp(4.7),
   },
 })
 
-const Header: React.FC<{}> = () => {
+const Header: React.FC<{scrollOffset: SharedValue<number>}> = ({
+  scrollOffset,
+}) => {
+  const y = useSharedValue(100)
+  const ref = React.useRef<Animated.View | undefined>()
+  const container = useAnimatedStyle(() => {
+    return {
+      position: scrollOffset.value >= y.value ? 'absolute' : 'relative',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingBottom: 15,
+      backgroundColor: 'rgba(255,255,255,0.8)',
+    }
+  })
   return (
-    <View style={headerStyle.container}>
+    <Animated.View
+      onLayout={e => {
+        //@ts-ignore
+        ref.current?.measure((fx, fy, width, height, px, py) => {
+          y.value = py
+        })
+      }}
+      //@ts-ignore
+      ref={ref}
+      // style={headerStyle.container}>
+      style={container}>
       <View style={headerStyle.left}>
         <FastImage
           source={require('../assets/images/menu.png')}
@@ -112,7 +154,7 @@ const Header: React.FC<{}> = () => {
           source={require('../assets/images/profile.jpeg')}
         />
       </View>
-    </View>
+    </Animated.View>
   )
 }
 
@@ -122,7 +164,6 @@ const headerStyle = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingBottom: 15,
-    paddingHorizontal: paddings.screenPaddingHorizontal,
     backgroundColor: 'rgba(255,255,255,0.8)',
   },
   left: {
@@ -212,28 +253,33 @@ const TabItem: React.FC<{imageUrl: Source; text: string; isActive: boolean}> =
 
 const styles = StyleSheet.create({
   body: {
-    paddingTop: paddings.screenPaddingTop,
-    paddingBottom: wp(10),
-  },
-  container: {
-    width: wp(100),
     paddingHorizontal: paddings.screenPaddingHorizontal,
-    paddingTop: 15,
+    paddingTop: wp(2),
   },
+  flatList: {},
+  flatListContent: {
+    // paddingTop: wp(1),
+    // paddingBottom: wp(20),
+    // paddingHorizontal: paddings.screenPaddingHorizontal,
+  },
+  container: {},
   tabs: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: wp(4),
   },
   // MOVER
   moverContainer: {
-    paddingVertical: 40,
+    // paddingVertical: 40,
+    paddingBottom: wp(5),
+    // paddingTop: wp(5)
   },
   moverHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
-    paddingHorizontal: 5,
+    paddingHorizontal: wp(2),
   },
   moverTitle: {
     fontSize: wp(5),
