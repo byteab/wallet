@@ -89,7 +89,7 @@ export const startApp = () => {
             selectedTextColor,
             text: 'TOKENS',
             testID: 'TOKENS_TAB',
-            icon: require('../assets/icons/option.png'),
+            icon: require('../assets/icons/tokens.png'),
             iconWidth: wp(7.5),
           },
           topBar: {
