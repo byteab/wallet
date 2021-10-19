@@ -7,7 +7,7 @@ git clone https://github.com/TheEhsanSarshar/wallet
 ```
 
 ```bash
-cd wallet && npx react-native run-android --variant=release
+cd wallet && yarn && npx react-native run-android --variant=release
 ```
 
 ## Note
