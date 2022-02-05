@@ -1,5 +1,7 @@
 # wallet
 Demo wallet app
+## Warning
+### There might be some anti patterns and some codes that are not good practice. this is just a demo UI app.
 
 ## How to run
 ```bash 
